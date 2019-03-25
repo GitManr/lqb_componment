@@ -9,19 +9,19 @@ const webpack_base = {
       extensions: ['.js', '.jsx', '.less', '.scss', '.css'],
       modules: [
         Config.srcPath,
-        Config.nodeModulesPath
+        'node_modules',
       ]
     },
     module: {},
-    // mode: 'production'
 }
 
-// webpack_base.entry = ['babel-polyfill', Config.srcPath];
+webpack_base.entry = Config.srcPath;
 
 webpack_base.output = {
-  path: path.resolve(__dirname, Config.distPath),
-  filename: "[name].[hash].bundle.js",
-  publicPath: '',
+    path:Config.distPath,
+    publicPath: './',
+    // filename: 'js/bundle.js',
+    chunkFilename: 'js/[chunkhash].js'
 }
 
 webpack_base.module.rules = [
@@ -34,7 +34,8 @@ webpack_base.module.rules = [
   },
   {
     test: /\.css$/,
-    use: ['style-loader', 'css-loader'],
+    use: ['style-loader', 'css-loader', 'postcss-loader', ],
+    exclude: /node_modules/,
   }
 ]
 
@@ -42,6 +43,7 @@ webpack_base.plugins = [
   new HtmlWebpackPlugin({
     template:Config.templatePath
   }),
+  // require('autoprefixer'),
 ]
 
 
